@@ -60,7 +60,7 @@ class PredictorModel(nn.Module):
         super(PredictorModel, self).__init__()
         
         # Define layers
-        self.adaptive_pool = nn.AdaptiveAvgPool2d((7, 7))
+        self.adaptive_pool = nn.AdaptiveAvgPool2d((8, 8))
         self.conv1 = nn.Conv2d(1, 64, kernel_size=3, padding=1)
         self.pool = nn.AdaptiveAvgPool2d((4, 4))
         self.fc = nn.Linear(64 * 4 * 4, output_size)
@@ -78,8 +78,8 @@ class PredictorModel(nn.Module):
             x = x.permute(1, 0, 2, 3)
         
         # Standardize input size using adaptive pooling or interpolation
-        if x.size(2) < 7 or x.size(3) < 7:
-            x = F.interpolate(x, size=(7, 7), mode='bilinear', align_corners=False)
+        if x.size(2) < 8 or x.size(3) < 8:
+            x = F.interpolate(x, size=(8, 8), mode='bilinear', align_corners=False)
         else:
             print(f"x shape before adaptive_pool: {x.shape}")
             print(f"x device: {x.device}")
