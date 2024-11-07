@@ -155,12 +155,12 @@ for epoch in range(num_epochs):
         for layer, activation in activations.items():
             if hasattr(layer, 'weight') and layer.weight.grad is not None:
                 # Get the actual gradient for weights
-                actual_weight_grad = layer.weight.grad.detach().view(-1)
+                actual_weight_grad = layer.weight.grad.view(-1)
                 target_size = actual_weight_grad.size(0)
                 
                 # Predict a fixed-size output and interpolate to target size
-                activation = activation.detach()
-                fixed_predicted_gradients = predictor_model(activation).detach()
+                # activation = activation.detach()
+                fixed_predicted_gradients = predictor_model(activation)
                
                 print("got the predicted gradients, now lets interpolate")
                 interpolated_predicted_gradients = F.interpolate(
@@ -169,14 +169,14 @@ for epoch in range(num_epochs):
                     mode='linear', 
                     align_corners=False
                 ).view(-1)
-                interpolated_predicted_gradients = interpolated_predicted_gradients.detach()
+                interpolated_predicted_gradients = interpolated_predicted_gradients
                 # Calculate MAPE loss for weights
                 layer_mape_loss = mape_loss(interpolated_predicted_gradients, actual_weight_grad)
                 total_mape_loss += layer_mape_loss
 
                 # Optionally: Handle bias gradients if the layer has a bias
                 if layer.bias is not None and layer.bias.grad is not None:
-                    actual_bias_grad = layer.bias.grad.detach().view(-1)
+                    actual_bias_grad = layer.bias.grad.view(-1)
                     bias_target_size = actual_bias_grad.size(0)
                     
                     # Interpolate for bias gradients
@@ -190,6 +190,9 @@ for epoch in range(num_epochs):
                     # Compute MAPE loss for biases
                     bias_mape_loss = mape_loss(bias_interpolated_predicted_gradients, actual_bias_grad)
                     total_mape_loss += bias_mape_loss
+                    print(total_mape_loss)
+
+
 
         # Update predictor model based on total MAPE loss for all layers
         predictor_optimizer.zero_grad()
