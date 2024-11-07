@@ -128,6 +128,7 @@ for name, layer in main_model.named_modules():
 
 num_epochs = 10
 for epoch in range(num_epochs):
+    print(f"Epoch : {epoch+1}")
     main_model.train()
     predictor_model.train()
 
@@ -135,7 +136,7 @@ for epoch in range(num_epochs):
     epoch_mape_loss = 0.0  # For tracking predictor model's MAPE loss
     num_batches = 0
     
-    for inputs, labels in train_dataloader:
+    for inputs, labels in tqdm(train_dataloader):
         inputs, labels = inputs.to(device), labels.to(device)
         
         # Forward pass through the main model (hooks will capture activations)
@@ -152,6 +153,7 @@ for epoch in range(num_epochs):
         
         # Loop through each layer's activation and gradient to train predictor model
         total_mape_loss = 0.0
+        
         for layer, activation in activations.items():
             if hasattr(layer, 'weight') and layer.weight.grad is not None:
                 # Get the actual gradient for weights
@@ -174,7 +176,7 @@ for epoch in range(num_epochs):
                 interpolated_predicted_gradients = interpolated_predicted_gradients
                 # Calculate MAPE loss for weights
                 layer_mape_loss = F.mse_loss(interpolated_predicted_gradients, actual_weight_grad)
-                print(f"Layer MAPE loss :{layer_mape_loss}")
+                # print(f"Layer MAPE loss :{layer_mape_loss}")
                 total_mape_loss += layer_mape_loss
 
                 # Optionally: Handle bias gradients if the layer has a bias
@@ -193,7 +195,7 @@ for epoch in range(num_epochs):
                     # Compute MAPE loss for biases
                     bias_mape_loss = F.mse_loss(bias_interpolated_predicted_gradients, actual_bias_grad)
                     total_mape_loss += bias_mape_loss
-                    print(f"Bias MAPE loss :{bias_mape_loss}")
+                    # print(f"Bias MAPE loss :{bias_mape_loss}")
                   
         activations.clear()
 
