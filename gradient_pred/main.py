@@ -67,7 +67,7 @@ class PredictorModel(nn.Module):
     
     def forward(self, x):
         # Reshape if input is a flat vector
-        print(x.shape)
+        # print(x.shape)
         if len(x.shape) == 2:
             batch_size, features = x.shape
             side_length = int(features/2)
