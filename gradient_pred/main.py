@@ -158,8 +158,9 @@ for epoch in range(num_epochs):
                 target_size = actual_weight_grad.size(0)
                 
                 # Predict a fixed-size output and interpolate to target size
-                fixed_predicted_gradients = predictor_model(activation)
                 activation = activation.detach()
+                fixed_predicted_gradients = predictor_model(activation).detach()
+               
                 print("got the predicted gradients, now lets interpolate")
                 interpolated_predicted_gradients = F.interpolate(
                     fixed_predicted_gradients.view(1, 1, -1), 
