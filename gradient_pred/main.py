@@ -81,6 +81,8 @@ class PredictorModel(nn.Module):
         if x.size(2) < 7 or x.size(3) < 7:
             x = F.interpolate(x, size=(7, 7), mode='bilinear', align_corners=False)
         else:
+            print(f"x shape before adaptive_pool: {x.shape}")
+            print(f"x device: {x.device}")
             x = self.adaptive_pool(x)
         
         # Pass through convolutional layers
