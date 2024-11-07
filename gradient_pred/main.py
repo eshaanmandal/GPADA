@@ -155,6 +155,7 @@ for epoch in range(num_epochs):
                 
                 # Predict a fixed-size output and interpolate to target size
                 fixed_predicted_gradients = predictor_model(activation)
+                print("got the predicted gradients, now lets interpolate")
                 interpolated_predicted_gradients = F.interpolate(
                     fixed_predicted_gradients.view(1, 1, -1), 
                     size=(target_size,),
