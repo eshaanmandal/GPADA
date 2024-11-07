@@ -171,7 +171,7 @@ for epoch in range(num_epochs):
                 ).view(-1)
                 interpolated_predicted_gradients = interpolated_predicted_gradients
                 # Calculate MAPE loss for weights
-                layer_mape_loss = mape_loss(interpolated_predicted_gradients, actual_weight_grad)
+                layer_mape_loss = F.mse_loss(interpolated_predicted_gradients, actual_weight_grad)
                 print(f"Layer MAPE loss :{layer_mape_loss}")
                 total_mape_loss += layer_mape_loss
 
@@ -189,7 +189,7 @@ for epoch in range(num_epochs):
                     ).view(-1)
                     
                     # Compute MAPE loss for biases
-                    bias_mape_loss = mape_loss(bias_interpolated_predicted_gradients, actual_bias_grad)
+                    bias_mape_loss = F.mse_loss(bias_interpolated_predicted_gradients, actual_bias_grad)
                     total_mape_loss += bias_mape_loss
                     print(f"Bias MAPE loss :{bias_mape_loss}")
                   
