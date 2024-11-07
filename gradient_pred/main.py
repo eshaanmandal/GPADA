@@ -7,6 +7,7 @@ import random
 import torch.nn.functional as F
 import numpy as np
 import torch.optim as optim
+from tqdm import tqdm
 
 # setting  the seed
 seed  = 42
