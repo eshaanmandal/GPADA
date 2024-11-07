@@ -156,11 +156,13 @@ for epoch in range(num_epochs):
             if hasattr(layer, 'weight') and layer.weight.grad is not None:
                 # Get the actual gradient for weights
                 actual_weight_grad = layer.weight.grad.view(-1)
+                actual_weight_grad = torch.clamp(actual_weight_grad, -1.0, 1.0)
                 target_size = actual_weight_grad.size(0)
                 
                 # Predict a fixed-size output and interpolate to target size
                 # activation = activation.detach()
                 fixed_predicted_gradients = predictor_model(activation)
+                fixed_predicted_gradients = torch.clamp(fixed_predicted_gradients, -1.0, 1.0)
                
                 # print("got the predicted gradients, now lets interpolate")
                 interpolated_predicted_gradients = F.interpolate(
