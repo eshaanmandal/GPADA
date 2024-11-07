@@ -83,6 +83,7 @@ class PredictorModel(nn.Module):
         else:
             print(f"x shape before adaptive_pool: {x.shape}")
             print(f"x device: {x.device}")
+            torch.cuda.empty_cache()
             x = self.adaptive_pool(x)
             print(f"x shape after adaptive_pool: {x.shape}")
         
