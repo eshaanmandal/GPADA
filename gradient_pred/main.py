@@ -198,8 +198,4 @@ for epoch in range(num_epochs):
 
 
 
-random_tensor = torch.randn(64, 256, 8, 8)
 
-x = predictor_model(random_tensor)
-
-print(x.size())
