@@ -153,9 +153,10 @@ for epoch in range(num_epochs):
         torch.cuda.empty_cache()
         
         # Loop through each layer's activation and gradient to train predictor model
-        total_mape_loss = 0.0
         
+        # total_mape_loss = 0.0
         for layer, activation in activations.items():
+            total_mape_loss = 0.0
             if hasattr(layer, 'weight') and layer.weight.grad is not None:
                 # Get the actual gradient for weights
                 actual_weight_grad = layer.weight.grad.view(-1)
@@ -197,22 +198,28 @@ for epoch in range(num_epochs):
                     bias_mape_loss = F.mse_loss(bias_interpolated_predicted_gradients, actual_bias_grad)
                     total_mape_loss += bias_mape_loss
                     # print(f"Bias MAPE loss :{bias_mape_loss}")
+
+                    predictor_optimizer.zero_grad()
+                    total_mape_loss.backward()
+                    predictor_optimizer.step()
+
+            # epoch_mape_loss += total_mape_loss.item()
                   
         activations.clear()
 
 
         # Update predictor model based on total MAPE loss for all layers
-        predictor_optimizer.zero_grad()
-        total_mape_loss.backward()
-        predictor_optimizer.step()
+        # predictor_optimizer.zero_grad()
+        # total_mape_loss.backward()
+        # predictor_optimizer.step()
 
-        epoch_mape_loss += total_mape_loss.item()
-        num_batches += 1
+        # epoch_mape_loss += total_mape_loss.item()
+        # num_batches += 1
     
     avg_main_loss = epoch_main_loss / num_batches
     avg_mape_loss = epoch_mape_loss / num_batches
         
-    print(f"Epoch [{epoch+1}/{num_epochs}], Average Cross Entropy Loss: {avg_main_loss:.4f}, Average MAPE Loss: {avg_mape_loss:.4f}")
+    print(f"Epoch [{epoch+1}/{num_epochs}], Average Cross Entropy Loss: {avg_main_loss:.4f}")
 
 
 
