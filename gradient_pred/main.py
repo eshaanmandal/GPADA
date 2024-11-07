@@ -110,7 +110,7 @@ main_model = models.resnet50(weights=None)
 main_model.fc = nn.Linear(main_model.fc.in_features, num_classes)
 main_model = main_model.to(device)
 
-predictor_model = PredictorModel(5000).to(device)
+predictor_model = PredictorModel(20000).to(device)
 mape_loss = MAPELoss()
 criterion = nn.CrossEntropyLoss()
 
