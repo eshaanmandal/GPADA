@@ -17,7 +17,7 @@ np.random.seed(seed)
 random.seed(seed)
 
 
-batch_size = 16
+batch_size = 2
 num_classes = 10
 device = "cuda:1" if torch.cuda.is_available() else "cpu"
 
