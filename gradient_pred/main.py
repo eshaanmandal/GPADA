@@ -20,8 +20,8 @@ random.seed(seed)
 
 batch_size = 32
 num_classes = 10
-# device = "cuda:1" if torch.cuda.is_available() else "cpu"
-device = "cpu"
+device = "cuda:1" if torch.cuda.is_available() else "cpu"
+# device = "cpu"
 
 
 
