@@ -83,7 +83,6 @@ class PredictorModel(nn.Module):
         else:
             print(f"x shape before adaptive_pool: {x.shape}")
             print(f"x device: {x.device}")
-            torch.cuda.empty_cache()
             x = self.adaptive_pool(x)
             print(f"x shape after adaptive_pool: {x.shape}")
         
@@ -148,6 +147,7 @@ for epoch in range(num_epochs):
         main_optimizer.step()
 
         epoch_main_loss += loss_main.item()
+        torch.cuda.empty_cache()
         
         # Loop through each layer's activation and gradient to train predictor model
         total_mape_loss = 0.0
