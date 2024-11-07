@@ -172,6 +172,7 @@ for epoch in range(num_epochs):
                 interpolated_predicted_gradients = interpolated_predicted_gradients
                 # Calculate MAPE loss for weights
                 layer_mape_loss = mape_loss(interpolated_predicted_gradients, actual_weight_grad)
+                print(f"Layer MAPE loss :{layer_mape_loss}")
                 total_mape_loss += layer_mape_loss
 
                 # Optionally: Handle bias gradients if the layer has a bias
@@ -190,8 +191,9 @@ for epoch in range(num_epochs):
                     # Compute MAPE loss for biases
                     bias_mape_loss = mape_loss(bias_interpolated_predicted_gradients, actual_bias_grad)
                     total_mape_loss += bias_mape_loss
-                    print(total_mape_loss)
-
+                    print(f"Bias MAPE loss :{bias_mape_loss}")
+                  
+        activations.clear()
 
 
         # Update predictor model based on total MAPE loss for all layers
