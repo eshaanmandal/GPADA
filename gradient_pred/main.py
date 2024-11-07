@@ -159,6 +159,7 @@ for epoch in range(num_epochs):
                 
                 # Predict a fixed-size output and interpolate to target size
                 fixed_predicted_gradients = predictor_model(activation)
+                activation = activation.detach()
                 print("got the predicted gradients, now lets interpolate")
                 interpolated_predicted_gradients = F.interpolate(
                     fixed_predicted_gradients.view(1, 1, -1), 
@@ -166,7 +167,7 @@ for epoch in range(num_epochs):
                     mode='linear', 
                     align_corners=False
                 ).view(-1)
-                
+                interpolated_predicted_gradients = interpolated_predicted_gradients.detach()
                 # Calculate MAPE loss for weights
                 layer_mape_loss = mape_loss(interpolated_predicted_gradients, actual_weight_grad)
                 total_mape_loss += layer_mape_loss
