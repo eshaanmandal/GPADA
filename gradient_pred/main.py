@@ -17,7 +17,7 @@ np.random.seed(seed)
 random.seed(seed)
 
 
-batch_size = 64
+batch_size = 16
 num_classes = 10
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -98,7 +98,7 @@ class MAPELoss(nn.Module):
 
     def forward(self, predicted, target):
         epsilon = 1e-8  # Small value to avoid division by zero
-        return torch.mean(torch.abs((target - predicted) / (target + epsilon))) * 100
+        return torch.mean(torch.abs((target - predicted) / (target + epsilon))) 
 
 
 #lets define the model we want to train
